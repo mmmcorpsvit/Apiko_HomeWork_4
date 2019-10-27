@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const FetchData = (url, HandleData, HandleIsLoading) => {
+    HandleIsLoading(true);
     fetch(url)
         .then(res => res.json())
         .then(
