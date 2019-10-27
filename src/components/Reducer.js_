@@ -1,0 +1,41 @@
+import React from "react";
+// import {TV_SHOW_TYPE} from "../config";
+
+export const ACTIONS = {
+    SWITCH_MOVIE_TYPE: 0,
+    SWITCH_MOVIE_PAGE: 1,
+
+};
+
+// export const initialState = () => {
+//     // const movie_type = TV_SHOW_TYPE.getValue(0);
+//     const movie_type = 0;
+// };
+
+// export const Reducer = ();
+
+// let x = 1;
+
+
+// Тут наш reducer та initialState
+// знаходяться за межами компоненту App
+export const reducer = (state: any, action: any) => {
+    switch (action.type) {
+        case ACTIONS.SWITCH_MOVIE_TYPE:
+            console.log(action);
+            return {
+                ...state,
+                MOVIE_TYPE: true,
+            };
+        // ... можете перелічити інші case
+        default:
+            return state;
+    }
+};
+
+export const initialState = {
+    MOVIE_TYPE: 0,
+    isAuthenticated: false,
+    shake: false,
+    categories: ['Participants', 'Races'],
+};
