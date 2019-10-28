@@ -4,20 +4,18 @@ import {ListGroup, ToggleButtonGroup, ToggleButton, Pagination, PageItem } from 
 
 import {ITVShowListData} from "../config";
 
-export const TVShowList = ({list_data, onItemClick, ...props})  => {
+export const TVShowList = ({data, onItemClick, ...props})  => {
+    if (data === undefined) {
+        return null;
+    }
+
     return (
         <ListGroup>
-            {list_data.map((items)=>(
-                <ListGroup.Item key={items.id} onClick={onItemClick}>{items.name}</ListGroup.Item>
+            {console.log('list render', data)}
+
+            {data.results.map((item)=>(
+                <ListGroup.Item key={item.id} onClick={onItemClick}>{item.name}</ListGroup.Item>
             ))}
-
-            {/*<ListGroup.Item onClick={onItemClick}>Cras justo odio</ListGroup.Item>*/}
-
-
-            {/*<ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>*/}
-            {/*<ListGroup.Item>Morbi leo risus</ListGroup.Item>*/}
-            {/*<ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>*/}
-
 
         </ListGroup>
     )

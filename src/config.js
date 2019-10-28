@@ -3,6 +3,11 @@ const URL_BASE = "https://api.themoviedb.org/3/";
 const URL_PARAMS = `?language=en-US&api_key=${API_KEY}`;
 const TV_SHOW_CAPTION_SUFIX = ' TV shows';
 
+// class TV_SHOW_TYPE_ITEM{
+//   constructor();
+//
+// };
+
 export const TV_SHOW_TYPE_INDEX = {
     POPULAR: 'POPULAR',
     TOP_RATED: 'TOP_RATED',
@@ -20,3 +25,8 @@ export const TV_SHOW_TYPE = {
     },
 
 };
+
+
+// export const TV_SHOW_TYPE2 = [
+//     popular: 'name'
+// ];

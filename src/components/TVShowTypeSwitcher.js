@@ -5,24 +5,28 @@ import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 import {TV_SHOW_TYPE} from "../config";
 
 
-export const TVShowTypeSwitcher = ({movie_type, onChangeHandle, ...props}) => {
+export const TVShowTypeSwitcher = ({movie, onChangeHandle, ...props}) => {
 // export const TVShowTypeSwitcher: React.FC = (props) => {
-    const [value, setMovieType] = useState();
-    const handleChange = (val) => {
-        console.log(val);
-        setMovieType(val);
-        onChangeHandle(val);
-    };
-
+//     const [value, setMovieType] = useState();
+//     const handleChange = (val) => {
+//         console.log(val);
+//         setMovieType(val);
+//         onChangeHandle(val);
+//     };
+//
 
     let ToggleButtons = [];
     for (let key in TV_SHOW_TYPE) {
-        ToggleButtons.push((<ToggleButton key={key} value={key}>{TV_SHOW_TYPE[key].name}</ToggleButton>))
+        ToggleButtons.push(
+            (<ToggleButton
+                key={key}
+                value={key}>{TV_SHOW_TYPE[key].name}
+            </ToggleButton>))
     }
 
     return (
         <Fragment>
-            <ToggleButtonGroup type="radio" defaultValue={movie_type} onChange={onChangeHandle} name="TVShowTypeSwitcher">
+            <ToggleButtonGroup type="radio" defaultValue={movie.type} onChange={onChangeHandle} name="TVShowTypeSwitcher">
                 {ToggleButtons}
             </ToggleButtonGroup>
         </Fragment>
@@ -30,7 +34,7 @@ export const TVShowTypeSwitcher = ({movie_type, onChangeHandle, ...props}) => {
 };
 
 
-TVShowTypeSwitcher.propTypes = {
-    movie_type: T.string.isRequired,
-    onChangeHandle: T.func.isRequired
-};
+// TVShowTypeSwitcher.propTypes = {
+//     movie_type: T.string.isRequired,
+//     onChangeHandle: T.func.isRequired
+// };
