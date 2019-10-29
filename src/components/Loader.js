@@ -3,10 +3,10 @@ import React from 'react';
 
 import {Modal, Spinner} from 'react-bootstrap';
 
-export const Loader = (backdrop=false, ...props) => {
+export const Loader = (...props) => {
     return (
         <>
-            <Modal show={true} centered={true} onHide={()=>{}} backdrop={backdrop}>
+            <Modal show={true} centered={true} onHide={()=>{}} backdrop={false}>
 
                 <Modal.Body>
                     <Spinner animation="border" role="status">

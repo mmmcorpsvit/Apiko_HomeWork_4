@@ -26,7 +26,7 @@ export const TVShowTypeSwitcher = ({movie, onChangeHandle, ...props}) => {
 
     return (
         <Fragment>
-            <ToggleButtonGroup type="radio" defaultValue={movie.type} onChange={onChangeHandle} name="TVShowTypeSwitcher">
+            <ToggleButtonGroup style={{size: 'sm'}} type="radio" defaultValue={movie.type} onChange={onChangeHandle} name="TVShowTypeSwitcher">
                 {ToggleButtons}
             </ToggleButtonGroup>
         </Fragment>
