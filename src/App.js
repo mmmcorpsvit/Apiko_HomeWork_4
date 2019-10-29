@@ -6,14 +6,13 @@
 // import Toggle from 'react-bootstrap-toggle';
 
 
-
 import React, {Fragment, useEffect, useState, useReducer} from 'react';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import {Header} from "./components/Header";
-import {TVShowList} from "./components/TVShowList";
+import {List} from "./components/List";
 
 //import {ITVShowListData} from "./config";
 // import {reducer, initialState} from "./components/Reducer";
@@ -22,9 +21,10 @@ import {TVShowTypeSwitcher} from "./components/TVShowTypeSwitcher";
 import {BreadcrumbBar} from "./components/BreadcrumbBar";
 import {Loader} from "./components/Loader";
 // import {ACTIONS} from "./components/Reducer";
-import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX} from "./config";
+import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX, CURRENT_VIEW} from "./config";
 import {FetchData} from "./components/FetchData";
-import T from "prop-types";
+// import T from "prop-types";
+import {Info} from './components/Info';
 
 
 const App = () => {
@@ -42,7 +42,8 @@ const App = () => {
 
     const [movie, setMovie] = useState({type: TV_SHOW_TYPE_INDEX.POPULAR, page: 1}); // TODO: UGLY, need TypeScipt ?
 
-    const [breadcrumbBarPath, setbreadcrumbBarPath] = useState([]);
+    // const [breadcrumbBarPath, setbreadcrumbBarPath] = useState([]);
+
 
     const setMovieType = (movie_type) => {
         // TODO: ?????????????
@@ -60,6 +61,16 @@ const App = () => {
     const [data, setData] = useState([]);
 
 
+    const [currentView, setCurrentView] = useState(CURRENT_VIEW[CURRENT_VIEW.MAIN]);
+    const [infoData, setInfoData] = useState({});
+
+
+    const handleItemClick = (id) =>{
+        // e.preventDefault();
+        // console.log(e.target.parent);
+        console.log(id);
+    };
+
     // init
     useEffect(() => FetchDataFromServer(), []);
 
@@ -72,7 +83,7 @@ const App = () => {
 
             <Navbar bg="dark" variant="dark" expand="sm" sticky="top">
                 {/*<a className="navbar-brand" href="/">HomeWork 4</a>*/}
-                <BreadcrumbBar/>
+                {/*<BreadcrumbBar/>*/}
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -96,7 +107,12 @@ const App = () => {
             {/*): null}*/}
 
             {isLoading ? (<Loader/>) : (
-                <TVShowList data={data} movie_page={movie.page} onPageChange={setMoviePage}/>
+                <Fragment>
+                    {currentView !== CURRENT_VIEW[CURRENT_VIEW.MAIN] ? <Info title={infoData.title} />: null}
+
+
+                    <List data={data} movie_page={movie.page} onPageChange={setMoviePage} handleItemClick={handleItemClick}/>
+                </Fragment>
             )}
 
         </Fragment>

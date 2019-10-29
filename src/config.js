@@ -27,6 +27,9 @@ export const TV_SHOW_TYPE = {
 };
 
 
-// export const TV_SHOW_TYPE2 = [
-//     popular: 'name'
-// ];
+export const CURRENT_VIEW = {
+    MAIN: 'MAIN',
+    MOVIE_INFO: 'MOVIE_INFO',
+    SEASON_INFO: 'SEASON_INFO',
+    EPISODE_INFO: 'EPISODE_INFO',
+};
