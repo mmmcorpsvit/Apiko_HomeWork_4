@@ -6,7 +6,7 @@
 // import Toggle from 'react-bootstrap-toggle';
 
 
-import React, {Fragment, useEffect, useState, useReducer} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,12 +16,12 @@ import {List} from "./components/List";
 
 //import {ITVShowListData} from "./config";
 // import {reducer, initialState} from "./components/Reducer";
-import {Form, Nav, Navbar} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 import {TVShowTypeSwitcher} from "./components/TVShowTypeSwitcher";
 import {BreadcrumbBar} from "./components/BreadcrumbBar";
 import {Loader} from "./components/Loader";
 // import {ACTIONS} from "./components/Reducer";
-import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX, CURRENT_VIEW} from "./config";
+import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX, URL_BASE, URL_PARAMS, CURRENT_VIEW} from "./config";
 import {FetchData} from "./components/FetchData";
 // import T from "prop-types";
 import {Info} from './components/Info';
@@ -30,9 +30,17 @@ import {Info} from './components/Info';
 const App = () => {
     const FetchDataFromServer = () => {
         // console.log(movie, TV_SHOW_TYPE[movie]);
-        let url_params = movie.page === 1 ? '' : `&page=${movie.page}`;
-        let url = TV_SHOW_TYPE[movie.type].url + url_params;
-        FetchData(url, setData, setIsLoading);
+        let url_params = '';
+        let url = '';
+
+        url_params = movie.page === 1 ? '' : `&page=${movie.page}`;
+        url = TV_SHOW_TYPE[movie.type].url + url_params;
+
+        // url_params = movie.page === 1 ? '' : `&page=${movie.page}`;
+        // url = TV_SHOW_TYPE[movie.type].url + url_params;
+
+        FetchData(url, (request_data) => setData(request_data.results), setIsLoading);
+        // setData(data.results);
     };
 
 
@@ -40,15 +48,15 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(true);
     // const [movie_type, setMovieType] = useState(TV_SHOW_TYPE_INDEX['POPULAR']); // TODO: UGLY, need TypeScipt ?
 
-    const [movie, setMovie] = useState({type: TV_SHOW_TYPE_INDEX.POPULAR, page: 1}); // TODO: UGLY, need TypeScipt ?
-
     // const [breadcrumbBarPath, setbreadcrumbBarPath] = useState([]);
 
 
+    const [movie, setMovie] = useState({type: TV_SHOW_TYPE_INDEX.POPULAR, page: 1}); // TODO: UGLY, need TypeScipt ?
+
     const setMovieType = (movie_type) => {
-        // TODO: ?????????????
-        movie.type = movie_type;
+        movie.type = movie_type;    // TODO: чому це працюэ??? баг?
         movie.page = 1;
+        setCurrentView(CURRENT_VIEW.MAIN);
         FetchDataFromServer();
     };
 
@@ -65,10 +73,19 @@ const App = () => {
     const [infoData, setInfoData] = useState({});
 
 
-    const handleItemClick = (id) =>{
+    const handleItemClick = (id) => {
+
         // e.preventDefault();
         // console.log(e.target.parent);
-        console.log(id);
+        setCurrentView(CURRENT_VIEW.MOVIE_INFO);
+
+        // console.log('handleItemClick: ' + id, currentView);
+
+        FetchData(`${URL_BASE}${id}${URL_PARAMS}`,
+            (request_data) => {
+                setData(request_data.seasons);
+                setInfoData(request_data);
+            }, setIsLoading);
     };
 
     // init
@@ -83,15 +100,19 @@ const App = () => {
 
             <Navbar bg="dark" variant="dark" expand="sm" sticky="top">
                 {/*<a className="navbar-brand" href="/">HomeWork 4</a>*/}
-                {/*<BreadcrumbBar/>*/}
+                {currentView !== CURRENT_VIEW.MAIN ? <BreadcrumbBar/> : null}
+
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 
 
-                    <Nav>
-                        <TVShowTypeSwitcher movie={movie} onChangeHandle={setMovieType}/>
-                    </Nav>
+                    {currentView === CURRENT_VIEW.MAIN
+                        ?
+                        <Nav>
+                            <TVShowTypeSwitcher movie={movie} onChangeHandle={setMovieType}/>
+                        </Nav>
+                        : null}
 
 
                     {/*<Form inline>*/}
@@ -108,10 +129,18 @@ const App = () => {
 
             {isLoading ? (<Loader/>) : (
                 <Fragment>
-                    {currentView !== CURRENT_VIEW[CURRENT_VIEW.MAIN] ? <Info title={infoData.title} />: null}
+                    {/*show additional info except main page*/}
+                    {currentView !== CURRENT_VIEW[CURRENT_VIEW.MAIN]
+                        ? <Info data={infoData}/>
+                        : null}
 
 
-                    <List data={data} movie_page={movie.page} onPageChange={setMoviePage} handleItemClick={handleItemClick}/>
+                    <List
+                        data={data}
+                        current_view={currentView}
+                        movie_page={movie.page}
+                        onPageChange={setMoviePage}
+                        handleItemClick={handleItemClick}/>
                 </Fragment>
             )}
 

@@ -1,5 +1,5 @@
-import React, {Fragment, useState} from "react";
-import T from 'prop-types';
+import React, {Fragment} from "react";
+// import T from 'prop-types';
 
 import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 import {TV_SHOW_TYPE} from "../config";

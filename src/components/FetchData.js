@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const FetchData = (url, HandleData, HandleIsLoading) => {
     console.log(url);
 
