@@ -112,7 +112,7 @@ const App = () => {
                         episode_id: clicked_item.episode_number,
                         // data: responce_data.crew,
                         data: [],
-                        // infoData: responce_data
+                        infoData: responce_data
                     });
                 };
                 break;

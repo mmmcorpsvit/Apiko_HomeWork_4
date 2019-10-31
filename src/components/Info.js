@@ -33,11 +33,13 @@ export const Info = ({infoData, ...props}) => {
                 {/*    {data.name}*/}
                 {/*</Card.Header>*/}
 
-                <Card.Img alt={infoData.name}
-                    // style={{width: '185', height: '278'}}
-                          variant="top"
-                          src={'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + infoData.poster_path}
-                />
+                {!infoData.poster_path
+                    ? <Card.Text>Image not found :(</Card.Text>
+                    :                    <Card.Img alt={infoData.name}
+                        // style={{width: '185', height: '278'}}
+                              variant="top"
+                              src={'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + infoData.poster_path}
+                    />}
 
                 <Card.Body>
                     <Card.Title>{infoData.name}</Card.Title>
@@ -48,7 +50,7 @@ export const Info = ({infoData, ...props}) => {
 
                         <InfoItem info_header="Episodes" info_value={infoData.number_of_episodes}/>
                         <InfoItem info_header="Episodes" info_value={Array.isArray(infoData.episodes) ? infoData.episodes.length : null}/>
-                        <InfoItem info_header="Episodes Number" info_value={adjust(infoData.episodes)}/>
+                        <InfoItem info_header="Episode Number" info_value={infoData.episode_number}/>
 
                         {/*Episodes: {data.number_of_episodes}*/}
                     </Card.Text>
