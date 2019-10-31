@@ -6,15 +6,6 @@ import {TV_SHOW_TYPE} from "../config";
 
 
 export const TVShowTypeSwitcher = ({tvshow, onChangeHandle, ...props}) => {
-// export const TVShowTypeSwitcher: React.FC = (props) => {
-//     const [value, setMovieType] = useState();
-//     const handleChange = (val) => {
-//         console.log(val);
-//         setMovieType(val);
-//         onChangeHandle(val);
-//     };
-//
-
     const ToggleButtons = [];
     for (const key in TV_SHOW_TYPE) {
         ToggleButtons.push(

@@ -13,14 +13,9 @@ export const List = ({listData, current_view, handleItemClick, onPageChange, ...
                 {listData.data.map((item) => (
                     <ListItem
                         key={item.id}
-                        // current_show_id = {current_show_id}
-                        // id={item.id}
-                        // aditional_id={item[aditional_id_field]}
-                        // current_episode_id={current_episode_id}
 
                         item={item}
                         handleItemClick={handleItemClick}
-                        // text={item.name}
                     />
                 ))}
 

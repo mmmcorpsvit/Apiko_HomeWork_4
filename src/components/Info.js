@@ -25,10 +25,6 @@ export const Info = ({infoData, ...props}) => {
         return res;
     };
 
-    // if (data === undefined) {
-    //     return null;
-    // }
-
     // заголовок, опис, постер, кількість сезонів, кількість епізодів і список сезонів даного TV show.
     return (
         <Fragment>
