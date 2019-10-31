@@ -1,5 +1,5 @@
 ## Description
-Реалізувати SPA на чистому JavaScript (без використання будь-яких сторонніх бібліотек), використовуючи The Movie Database API - https://developers.themoviedb.org/3/getting-started
+Реалізувати на ReactJS, використовуючи The Movie Database API - https://developers.themoviedb.org/3/getting-started
 Для отримання access token потрібно буде зареєструватись.
 
 Головні вимоги:
