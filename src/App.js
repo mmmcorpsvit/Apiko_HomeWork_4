@@ -7,23 +7,17 @@
 
 
 import React, {Fragment, useEffect, useState} from 'react';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
+// import T from "prop-types";
 
+import {Nav, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import {Header} from "./components/Header";
+import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX, URL_BASE, URL_PARAMS, CURRENT_VIEW} from "./config";
 import {List} from "./components/List";
-
-//import {ITVShowListData} from "./config";
-// import {reducer, initialState} from "./components/Reducer";
-import {Nav, Navbar} from "react-bootstrap";
 import {TVShowTypeSwitcher} from "./components/TVShowTypeSwitcher";
 import {BreadcrumbBar} from "./components/BreadcrumbBar";
 import {Loader} from "./components/Loader";
-// import {ACTIONS} from "./components/Reducer";
-import {TV_SHOW_TYPE, TV_SHOW_TYPE_INDEX, URL_BASE, URL_PARAMS, CURRENT_VIEW} from "./config";
 import {FetchData} from "./components/FetchData";
-// import T from "prop-types";
 import {Info} from './components/Info';
 
 
@@ -41,7 +35,7 @@ const App = () => {
             episode_id: null,
 
             aditional_id_field: null,
-            seria_id: null,
+            // seria_id: null,
 
             infoData: null,
         }
@@ -128,11 +122,11 @@ const App = () => {
             case CURRENT_VIEW.SEASON_INFO:
                 setCurrentView(CURRENT_VIEW.EPISODE_INFO);
 
-                url = `${URL_BASE}${listData.show_id}/season/${listData.season_id}/episod/${clicked_item.episod_number} ${URL_PARAMS}`;
+                url = `${URL_BASE}${listData.show_id}/season/${listData.season_id}/episode/${clicked_item.episode_number}${URL_PARAMS}`;
                 handleDataFunction = (responce_data) => {
                     setListData({
                         ...listData,
-                        episod__id: clicked_item.episod_number,
+                        episode_id: clicked_item.episode_number,
                         // data: responce_data.episodes,
                         // infoData: responce_data
                     });
@@ -180,19 +174,10 @@ const App = () => {
                     <List
                         listData={listData}
 
-                        // data={data}
-                        // current_show_id={current_show_id}
-                        // aditional_id_field={current_aditional_id_field}
-                        // current_episode_id={current_episode_id}
-
-
                         current_view={currentView}
-
-                        // tvshowtype={tvshowtype}
 
                         onPageChange={setTVShowType_by_page}
                         handleItemClick={handleItemClick}/>
-                    {/*handleItemClick={MAIN_VIEW_handleItemClick}/>*/}
                 </Fragment>
             )}
 
