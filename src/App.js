@@ -110,7 +110,7 @@ const App = () => {
                     setListData({
                         ...listData,
                         episode_id: clicked_item.episode_number,
-                        // data: responce_data.episodes,
+                        data: responce_data.crew,
                         // infoData: responce_data
                     });
                 };
