@@ -28,119 +28,171 @@ import {Info} from './components/Info';
 
 
 const App = () => {
-    const FetchDataFromServer = () => {
-        // console.log(movie, TV_SHOW_TYPE[movie]);
-        let url_params = '';
-        let url = '';
-
-        url_params = movie.page === 1 ? '' : `&page=${movie.page}`;
-        url = TV_SHOW_TYPE[movie.type].url + url_params;
-
-        // url_params = movie.page === 1 ? '' : `&page=${movie.page}`;
-        // url = TV_SHOW_TYPE[movie.type].url + url_params;
-
-        FetchData(url, (request_data) => setData(request_data.results), setIsLoading);
-        // setData(data.results);
-    };
-
-
-    // loading
     const [isLoading, setIsLoading] = useState(true);
-    // const [movie_type, setMovieType] = useState(TV_SHOW_TYPE_INDEX['POPULAR']); // TODO: UGLY, need TypeScipt ?
+    const [currentView, setCurrentView] = useState(CURRENT_VIEW.MAIN);
+    const [tvshowtype, setTVShowType] = useState({type: TV_SHOW_TYPE_INDEX.POPULAR, page: 1}); // TODO: UGLY, need TypeScipt ?
 
-    // const [breadcrumbBarPath, setbreadcrumbBarPath] = useState([]);
+    const [listData, setListData] = useState(
+        {
+            data: [],
+
+            show_id: null,
+            season_id: null,
+            episode_id: null,
+
+            aditional_id_field: null,
+            seria_id: null,
+
+            infoData: null,
+        }
+    );
 
 
-    const [movie, setMovie] = useState({type: TV_SHOW_TYPE_INDEX.POPULAR, page: 1}); // TODO: UGLY, need TypeScipt ?
+    // const [current_aditional_id_field, setCurrentAditionalIdField] = useState(null);
+    //
+    // const [current_show_id, setCurrentShowId] = useState("");
+    // const [current_episode_id, setCurrentEpisodeId] = useState("");
+    // // const [currentViewItemClickHandler, settViewItemClickHandler] = useState(MAIN_VIEW_handleItemClick);
+    // const [infoData, setInfoData] = useState({});
 
-    const setMovieType = (movie_type) => {
-        movie.type = movie_type;    // TODO: чому це працюэ??? баг?
-        movie.page = 1;
-        setCurrentView(CURRENT_VIEW.MAIN);
-        FetchDataFromServer();
+
+    const setTVShowType_by_type = (show_type) => {
+        const val = {...tvshowtype, type: show_type, page: 1};
+        setTVShowType(val);
+        FetchDataFromServer(val);
     };
 
-    const setMoviePage = (movie_page) => {
-        movie.page = movie_page;
-        FetchDataFromServer();
+    const setTVShowType_by_page = (page) => {
+        const val = {...tvshowtype, page: page};
+        setTVShowType(val);
+        FetchDataFromServer(val);
     };
 
 
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
 
+    const FetchDataFromServer = (tvshowtype) => {
+        const url_params = tvshowtype.page === 1 ? '' : `&page=${tvshowtype.page}`;
+        const url = TV_SHOW_TYPE[tvshowtype.type].url + url_params;
 
-    const [currentView, setCurrentView] = useState(CURRENT_VIEW[CURRENT_VIEW.MAIN]);
-    const [infoData, setInfoData] = useState({});
-
-
-    const handleItemClick = (id) => {
-
-        // e.preventDefault();
-        // console.log(e.target.parent);
-        setCurrentView(CURRENT_VIEW.MOVIE_INFO);
-
-        // console.log('handleItemClick: ' + id, currentView);
-
-        FetchData(`${URL_BASE}${id}${URL_PARAMS}`,
-            (request_data) => {
-                setData(request_data.seasons);
-                setInfoData(request_data);
-            }, setIsLoading);
+        // TODO: https://stackoverflow.com/questions/58593627/how-can-i-destructure-a-state-array-of-objects-in-this-react-component-to-use-in
+        FetchData(url, (request_data) => setListData({
+            ...listData,
+            data: request_data.results,
+            infoData: request_data
+        }), setIsLoading);
+        // FetchData(url, (request_data) => {
+        //     let v = listData;
+        //     v.data = request_data.results;
+        //     setListData(v);
+        //     // listData.data = request_data.results
+        // }, setIsLoading);
     };
+
+
+    const handleItemClick = (clicked_item) => {
+        let url = '';
+        let handleDataFunction = null;
+
+        switch (currentView) {
+            case CURRENT_VIEW.MAIN:
+                setCurrentView(CURRENT_VIEW.SHOW_INFO);
+                url = `${URL_BASE}${clicked_item.id}${URL_PARAMS}`;
+
+                handleDataFunction = (responce_data) => {
+                    setListData({
+                        ...listData,
+                        aditional_id_field: "season_number",
+                        show_id: clicked_item.id,
+                        data: responce_data.seasons,
+                        infoData: responce_data
+                    })
+                };
+                break;
+
+            case CURRENT_VIEW.SHOW_INFO:
+                setCurrentView(CURRENT_VIEW.SEASON_INFO);
+
+                url = `${URL_BASE}${listData.show_id}/season/${clicked_item.season_number}${URL_PARAMS}`;
+                handleDataFunction = (responce_data) => {
+                    setListData({
+                        ...listData,
+                        season_id: clicked_item.season_number,
+                        data: responce_data.episodes,
+                        infoData: responce_data
+                    });
+                };
+                break;
+
+
+            case CURRENT_VIEW.SEASON_INFO:
+                setCurrentView(CURRENT_VIEW.EPISODE_INFO);
+
+                url = `${URL_BASE}${listData.show_id}/season/${listData.season_id}/episod/${clicked_item.episod_number} ${URL_PARAMS}`;
+                handleDataFunction = (responce_data) => {
+                    setListData({
+                        ...listData,
+                        episod__id: clicked_item.episod_number,
+                        // data: responce_data.episodes,
+                        // infoData: responce_data
+                    });
+                };
+                break;
+            default:
+                alert('Unknown currentView');
+
+        }
+
+        FetchData(url, handleDataFunction, setIsLoading);
+    };
+
 
     // init
-    useEffect(() => FetchDataFromServer(), []);
-
-    // isLoading ? (
-    //     <Loader/>
-    // ) :
+    useEffect(() => FetchDataFromServer(tvshowtype), []);
 
     return (
         <Fragment>
-
             <Navbar bg="dark" variant="dark" expand="sm" sticky="top">
-                {/*<a className="navbar-brand" href="/">HomeWork 4</a>*/}
-                {currentView !== CURRENT_VIEW.MAIN ? <BreadcrumbBar/> : null}
-
+                {currentView !== CURRENT_VIEW.MAIN ? <BreadcrumbBar page={currentView}/> : null}
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 
-
                     {currentView === CURRENT_VIEW.MAIN
-                        ?
-                        <Nav>
-                            <TVShowTypeSwitcher movie={movie} onChangeHandle={setMovieType}/>
+                        ? <Nav>
+                            <TVShowTypeSwitcher
+                                tvshow={tvshowtype}
+                                onChangeHandle={setTVShowType_by_type}/>
                         </Nav>
                         : null}
-
-
-                    {/*<Form inline>*/}
-                    {/*<Filter handleFilter={props.handleFilter}/>*/}
-                    {/*</Form>*/}
 
                 </Navbar.Collapse>
             </Navbar>
 
-            {/*<Header MOVIE_PAGE={MOVIE_DATA.MOVIE_PAGE} MOVIE_TYPE={MOVIE_DATA.MOVIE_TYPE}/>*/}
-            {/*{ data.length >0 ? (*/}
-            {/*    <TVShowList data={data} movie_page={movie.page}/>*/}
-            {/*): null}*/}
-
             {isLoading ? (<Loader/>) : (
                 <Fragment>
                     {/*show additional info except main page*/}
-                    {currentView !== CURRENT_VIEW[CURRENT_VIEW.MAIN]
-                        ? <Info data={infoData}/>
+                    {currentView !== CURRENT_VIEW.MAIN
+                        ? <Info infoData={listData.infoData}/>
                         : null}
 
 
                     <List
-                        data={data}
+                        listData={listData}
+
+                        // data={data}
+                        // current_show_id={current_show_id}
+                        // aditional_id_field={current_aditional_id_field}
+                        // current_episode_id={current_episode_id}
+
+
                         current_view={currentView}
-                        movie_page={movie.page}
-                        onPageChange={setMoviePage}
+
+                        // tvshowtype={tvshowtype}
+
+                        onPageChange={setTVShowType_by_page}
                         handleItemClick={handleItemClick}/>
+                    {/*handleItemClick={MAIN_VIEW_handleItemClick}/>*/}
                 </Fragment>
             )}
 

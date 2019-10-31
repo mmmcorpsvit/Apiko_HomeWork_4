@@ -24,7 +24,7 @@ export const TV_SHOW_TYPE = {
 
 export const CURRENT_VIEW = {
     MAIN: 'MAIN',
-    MOVIE_INFO: 'MOVIE_INFO',
-    SEASON_INFO: 'SEASON_INFO',
-    EPISODE_INFO: 'EPISODE_INFO',
+    SHOW_INFO: 'TV Show',
+    SEASON_INFO: 'TV Show / Season',
+    EPISODE_INFO: 'TV Show / Season / Episode',
 };

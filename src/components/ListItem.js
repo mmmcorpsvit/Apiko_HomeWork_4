@@ -9,15 +9,19 @@ import {ListGroup} from 'react-bootstrap';
 
 // import {ITVShowListData} from "../config";
 
-export const ListItem = ({id, text, handleItemClick,...props}) => {
-    // if (data === undefined) {
-    //     return null;
-    // }
-
-
+export const ListItem = ({item, handleItemClick, ...props}) => {
     return (
-        <ListGroup.Item action href={`#${id}`} key={id} onClick={handleItemClick.bind(null, id)}>
-            {text}
+        <ListGroup.Item action
+                        href={`#${item.id}`}
+                        key={item.id}
+
+                        onClick={handleItemClick.bind(
+                            null,
+                            item,
+                            // aditional_id,
+                            // current_episode_id
+                        )}>
+            {item.name}
         </ListGroup.Item>
     )
 };

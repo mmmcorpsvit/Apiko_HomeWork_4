@@ -5,7 +5,7 @@ import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 import {TV_SHOW_TYPE} from "../config";
 
 
-export const TVShowTypeSwitcher = ({movie, onChangeHandle, ...props}) => {
+export const TVShowTypeSwitcher = ({tvshow, onChangeHandle, ...props}) => {
 // export const TVShowTypeSwitcher: React.FC = (props) => {
 //     const [value, setMovieType] = useState();
 //     const handleChange = (val) => {
@@ -15,8 +15,8 @@ export const TVShowTypeSwitcher = ({movie, onChangeHandle, ...props}) => {
 //     };
 //
 
-    let ToggleButtons = [];
-    for (let key in TV_SHOW_TYPE) {
+    const ToggleButtons = [];
+    for (const key in TV_SHOW_TYPE) {
         ToggleButtons.push(
             (<ToggleButton
                 key={key}
@@ -26,7 +26,13 @@ export const TVShowTypeSwitcher = ({movie, onChangeHandle, ...props}) => {
 
     return (
         <Fragment>
-            <ToggleButtonGroup style={{size: 'sm'}} type="radio" defaultValue={movie.type} onChange={onChangeHandle} name="TVShowTypeSwitcher">
+            <ToggleButtonGroup
+                style={{size: 'sm'}}
+                type="radio"
+                defaultValue={tvshow.type}
+                onChange={onChangeHandle}
+                name="TVShowTypeSwitcher">
+
                 {ToggleButtons}
             </ToggleButtonGroup>
         </Fragment>
