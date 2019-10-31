@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 
-import {Card} from 'react-bootstrap';
+// import {Card} from 'react-bootstrap';
 
 // import Pagination2 from "react-js-pagination-bs4";
 // require("bootstrap/less/bootstrap.less");

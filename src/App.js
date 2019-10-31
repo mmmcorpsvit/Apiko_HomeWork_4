@@ -29,25 +29,15 @@ const App = () => {
     const [listData, setListData] = useState(
         {
             data: [],
+            infoData: null,
 
             show_id: null,
             season_id: null,
             episode_id: null,
 
             aditional_id_field: null,
-            // seria_id: null,
-
-            infoData: null,
         }
     );
-
-
-    // const [current_aditional_id_field, setCurrentAditionalIdField] = useState(null);
-    //
-    // const [current_show_id, setCurrentShowId] = useState("");
-    // const [current_episode_id, setCurrentEpisodeId] = useState("");
-    // // const [currentViewItemClickHandler, settViewItemClickHandler] = useState(MAIN_VIEW_handleItemClick);
-    // const [infoData, setInfoData] = useState({});
 
 
     const setTVShowType_by_type = (show_type) => {
@@ -63,7 +53,6 @@ const App = () => {
     };
 
 
-    // const [data, setData] = useState([]);
 
     const FetchDataFromServer = (tvshowtype) => {
         const url_params = tvshowtype.page === 1 ? '' : `&page=${tvshowtype.page}`;
@@ -75,12 +64,6 @@ const App = () => {
             data: request_data.results,
             infoData: request_data
         }), setIsLoading);
-        // FetchData(url, (request_data) => {
-        //     let v = listData;
-        //     v.data = request_data.results;
-        //     setListData(v);
-        //     // listData.data = request_data.results
-        // }, setIsLoading);
     };
 
 
@@ -165,7 +148,6 @@ const App = () => {
 
             {isLoading ? (<Loader/>) : (
                 <Fragment>
-                    {/*show additional info except main page*/}
                     {currentView !== CURRENT_VIEW.MAIN
                         ? <Info infoData={listData.infoData}/>
                         : null}
